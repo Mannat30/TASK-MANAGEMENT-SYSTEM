@@ -2,33 +2,59 @@ package com.example.task.entity;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name="Task")//treat it as seaperate table
-public class Task {
-//    @ManyToOne
-//    @JoinColumn(name="user_id",nullable = false)
-//    private User user;
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private String status;
-    private String priority;
-    public Task(){
+import java.time.LocalDate;
 
+@Entity
+@Table(name = "tasks")
+public class Task {
+    private LocalDate duedate;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public LocalDate getDuedate() {
+        return duedate;
     }
 
-    public Task(Long id, String title, String description, String status, String priority) {
-        this.id = id;
+    public void setDuedate(LocalDate duedate) {
+        this.duedate = duedate;
+    }
+
+    private String title;
+
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    // Default constructor
+    public Task() {
+    }
+
+    // Constructor
+    public Task(
+            String title,
+            String description,
+            Status status,
+            Priority priority,LocalDate duedate) {
+
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.duedate=duedate;
     }
-    @ManyToOne
-    @JoinColumn(name="user_id",nullable = false)
-    private User user;
+
+    // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -53,19 +79,19 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 

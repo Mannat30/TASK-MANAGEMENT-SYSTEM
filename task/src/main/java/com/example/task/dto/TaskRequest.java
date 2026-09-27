@@ -1,16 +1,38 @@
 package com.example.task.dto;
 
+import com.example.task.entity.Priority;
+import com.example.task.entity.Status;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 public class TaskRequest {
-    @NotBlank(message="Title should not be empty")
+    private LocalDate duedate;
+
+    @NotBlank(message = "Title cannot be blank")
     private String title;
-    @NotBlank(message="description not be empty")
+
+    @NotBlank(message = "Description cannot be blank")
     private String description;
-    @NotBlank(message="Priority not be empty")
-    private String priority;
-    @NotBlank(message="status not be empty")
-    private String status;
+
+    private Status status;
+
+    private Priority priority;
+
+    public TaskRequest() {
+    }
+
+    public TaskRequest(
+            String title,
+            String description,
+            Status status,
+            Priority priority,LocalDate duedate) {
+
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+    }
 
     public String getTitle() {
         return title;
@@ -20,34 +42,35 @@ public class TaskRequest {
         this.title = title;
     }
 
-    public String getDesciption() {
+    public LocalDate getDuedate() {
+        return duedate;
+    }
+
+    public void setDuedate(LocalDate duedate) {
+        this.duedate = duedate;
+    }
+
+    public String getDescription() {
         return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.description = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public TaskRequest(String title, String description, String priority, String status) {
-        this.title = title;
-        this.description = description;
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
         this.priority = priority;
-        this.status = status;
     }
 }

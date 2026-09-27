@@ -1,25 +1,42 @@
 package com.example.task.dto;
 
+import com.example.task.entity.Priority;
+import com.example.task.entity.Status;
+
+import java.time.LocalDate;
+
 public class TaskResponse {
-    private int id;
+
+    private Long id;
     private String title;
     private String description;
-    private String status;
-    private String priority;
+    private Status status;
+    private Priority priority;
+    private LocalDate duedate;
 
-    public TaskResponse(int id, String title, String description, String status, String priority) {
+    public TaskResponse() {
+    }
+
+    public TaskResponse(
+            Long id,
+            String title,
+            String description,
+            Status status,
+            Priority priority,LocalDate duedate) {
+
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.duedate=duedate;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,27 +48,31 @@ public class TaskResponse {
         this.title = title;
     }
 
-    public String getDesciption() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDesciption(String description) {
+    public void setDuedate(LocalDate duedate) {
+        this.duedate = duedate;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 }
