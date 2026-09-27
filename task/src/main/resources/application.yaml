@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: task
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/taskdb
+    username: root
+    password: PASSWORD
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+jwt:
+  secret: my-super-secret-key-for-task-management-project-2026
+  expiration: 86400000
