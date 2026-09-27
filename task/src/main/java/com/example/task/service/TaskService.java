@@ -44,10 +44,41 @@ public class TaskService {
     }
 
     // Get all tasks
-    public Page<TaskResponse>find(String email, Pageable page){
-        User user=userRepo.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("User not found"));
-        return taskrepo.findByUser(user,page).map(this::convert);
+    public Page<TaskResponse> find(
+            String email,
+            String search,
+            String status,
+            Pageable page) {
+
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean hasSearch = search != null && !search.isBlank();
+        boolean hasStatus = status != null && !status.isBlank();
+
+        if (hasSearch && hasStatus) {
+            return taskrepo
+                    .findByUserAndStatusIgnoreCaseAndTitleContainingIgnoreCase(
+                            user, status, search, page)
+                    .map(this::convert);
+        }
+
+        if (hasSearch) {
+            return taskrepo
+                    .findByUserAndTitleContainingIgnoreCase(
+                            user, search, page)
+                    .map(this::convert);
+        }
+
+        if (hasStatus) {
+            return taskrepo
+                    .findByUserAndStatusIgnoreCase(
+                            user, status, page)
+                    .map(this::convert);
+        }
+
+        return taskrepo.findByUser(user, page)
+                .map(this::convert);
     }
 
     // Create task for logged-in user

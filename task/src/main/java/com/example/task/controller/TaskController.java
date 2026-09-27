@@ -35,12 +35,24 @@ public class TaskController {
     }
     // Get all tasks
     @GetMapping
-    public Page<TaskResponse> findall(Authentication authenticate,@RequestParam(defaultValue = "0")int page,@RequestParam(defaultValue = "0")int size){
-        String email=authenticate.getName();
-        Pageable pages= PageRequest.of(page, size);
-        return taskservice.find(email,pages);
-    }
+    public Page<TaskResponse> getAllTasks(
+            Authentication authentication,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "") String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
+        String email = authentication.getName();
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return taskservice.find(
+                email,
+                search,
+                status,
+                pageable
+        );
+    }
 
     // Create task for logged-in user
     @PostMapping
