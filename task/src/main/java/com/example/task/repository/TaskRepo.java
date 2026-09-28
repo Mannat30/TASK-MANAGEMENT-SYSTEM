@@ -10,42 +10,71 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskRepo extends JpaRepository<Task, Long> {
 
-    // All tasks
+    // =========================
+    // BASIC TASKS
+    // =========================
+
     Page<Task> findByUser(
             User user,
             Pageable pageable
     );
 
-    // Search by title
-    Page<Task> findByUserAndTitleContainingIgnoreCase(
+    // =========================
+    // STATUS
+    // =========================
+
+    Page<Task> findByUserAndStatus(
             User user,
-            String title,
+            Status status,
             Pageable pageable
     );
 
-    // Filter by status
-    Page<Task> findByUserAndStatusIgnoreCase(
-            User user,
-            String status,
-            Pageable pageable
-    );
+    // =========================
+    // PRIORITY
+    // =========================
 
-    // Search + Status
-    Page<Task> findByUserAndStatusIgnoreCaseAndTitleContainingIgnoreCase(
-            User user,
-            String status,
-            String title,
-            Pageable pageable
-    );
-
-    // Filter by Priority
     Page<Task> findByUserAndPriority(
             User user,
             Priority priority,
             Pageable pageable
     );
 
-    // Search + Priority
+    // =========================
+    // SEARCH
+    // =========================
+
+    Page<Task> findByUserAndTitleContainingIgnoreCase(
+            User user,
+            String title,
+            Pageable pageable
+    );
+
+    // =========================
+    // STATUS + PRIORITY
+    // =========================
+
+    Page<Task> findByUserAndStatusAndPriority(
+            User user,
+            Status status,
+            Priority priority,
+            Pageable pageable
+    );
+
+    // =========================
+    // STATUS + SEARCH
+    // =========================
+
+    Page<Task> findByUserAndStatusAndTitleContainingIgnoreCase(
+            User user,
+            Status status,
+            String title,
+            Pageable pageable
+    );
+
+    // =========================
+    // PRIORITY + SEARCH
+    // =========================
+
     Page<Task> findByUserAndPriorityAndTitleContainingIgnoreCase(
             User user,
             Priority priority,
@@ -53,25 +82,26 @@ public interface TaskRepo extends JpaRepository<Task, Long> {
             Pageable pageable
     );
 
-    // Status + Priority
-    Page<Task> findByUserAndStatusIgnoreCaseAndPriority(
-            User user,
-            String status,
-            Priority priority,
-            Pageable pageable
-    );
+    // =========================
+    // STATUS + PRIORITY + SEARCH
+    // =========================
 
-    // Search + Status + Priority
-    Page<Task> findByUserAndStatusIgnoreCaseAndPriorityAndTitleContainingIgnoreCase(
+    Page<Task> findByUserAndStatusAndPriorityAndTitleContainingIgnoreCase(
             User user,
-            String status,
+            Status status,
             Priority priority,
             String title,
             Pageable pageable
     );
 
+    // =========================
+    // STATISTICS
+    // =========================
+
     long countByUser(User user);
 
-    long countByUserAndStatus(User user, Status status);
-
+    long countByUserAndStatus(
+            User user,
+            Status status
+    );
 }

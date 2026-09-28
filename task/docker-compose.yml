@@ -1,0 +1,52 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: task-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 5s
+      retries: 10
+      interval: 5s
+    networks:
+      - task-network
+
+  backend:
+    image: task-backend:latest
+    container_name: task-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/taskdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: my-super-secret-key-for-task-management-project-2026
+      JWT_EXPIRATION: 86400000
+    networks:
+      - task-network
+
+  frontend:
+    image: task-frontend:latest
+    container_name: task-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - task-network
+
+volumes:
+  mysql_data:
+
+networks:
+  task-network:

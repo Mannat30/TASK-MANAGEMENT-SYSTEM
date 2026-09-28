@@ -22,14 +22,15 @@ public class TaskResponse {
             String title,
             String description,
             Status status,
-            Priority priority,LocalDate duedate) {
+            Priority priority,
+            LocalDate duedate) {
 
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
-        this.duedate=duedate;
+        this.duedate = duedate;
     }
 
     public Long getId() {
@@ -52,10 +53,6 @@ public class TaskResponse {
         return description;
     }
 
-    public void setDuedate(LocalDate duedate) {
-        this.duedate = duedate;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -74,5 +71,13 @@ public class TaskResponse {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public LocalDate getDuedate() {
+        return duedate;
+    }
+
+    public void setDuedate(LocalDate duedate) {
+        this.duedate = duedate;
     }
 }
