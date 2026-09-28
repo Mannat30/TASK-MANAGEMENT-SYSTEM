@@ -26,7 +26,10 @@ public class JwtService {
         this.expiration = expiration;
     }
 
-    // Generate JWT with email + role
+    // =========================
+    // GENERATE TOKEN
+    // =========================
+
     public String generateToken(String email, String role) {
 
         return Jwts.builder()
@@ -40,7 +43,10 @@ public class JwtService {
                 .compact();
     }
 
-    // Extract email from JWT
+    // =========================
+    // EXTRACT EMAIL
+    // =========================
+
     public String extractEmail(String token) {
 
         return Jwts.parser()
@@ -51,7 +57,10 @@ public class JwtService {
                 .getSubject();
     }
 
-    // Extract role from JWT
+    // =========================
+    // EXTRACT ROLE
+    // =========================
+
     public String extractRole(String token) {
 
         return Jwts.parser()
@@ -62,10 +71,14 @@ public class JwtService {
                 .get("role", String.class);
     }
 
-    // Validate JWT
+    // =========================
+    // VALIDATE TOKEN
+    // =========================
+
     public boolean isTokenValid(String token) {
 
         try {
+
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
@@ -74,6 +87,10 @@ public class JwtService {
             return true;
 
         } catch (Exception e) {
+
+            System.out.println("JWT VALIDATION ERROR: "
+                    + e.getMessage());
+
             return false;
         }
     }

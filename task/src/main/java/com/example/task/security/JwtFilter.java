@@ -1,10 +1,11 @@
 package com.example.task.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,42 +28,77 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        // Get Authorization header
-        String authHeader = request.getHeader("Authorization");
+        String path = request.getServletPath();
 
-        // If there is no Bearer token, continue
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        System.out.println("================================");
+        System.out.println("REQUEST: " + request.getMethod() + " " + path);
+
+        // ==========================================
+        // PUBLIC AUTH ENDPOINTS
+        // ==========================================
+
+        if (path.equals("/api/auth/login")
+                || path.equals("/api/auth/register")) {
+
+            System.out.println("PUBLIC AUTH ENDPOINT - JWT NOT REQUIRED");
+
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Remove "Bearer " from token
+        // ==========================================
+        // GET AUTHORIZATION HEADER
+        // ==========================================
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+
+            System.out.println("AUTH HEADER: NOT PRESENT");
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        System.out.println("AUTH HEADER: PRESENT");
+
         String token = authHeader.substring(7);
 
-        // Validate JWT
-        if (jwtService.isTokenValid(token)) {
+        if (token.isBlank()) {
 
-            // Extract email and role
+            System.out.println("JWT: EMPTY TOKEN");
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ==========================================
+        // VALIDATE JWT
+        // ==========================================
+
+        try {
+
+            if (!jwtService.isTokenValid(token)) {
+
+                System.out.println("JWT: INVALID TOKEN");
+
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             String email = jwtService.extractEmail(token);
             String role = jwtService.extractRole(token);
 
-            // DEBUG
-            System.out.println("JWT EMAIL = " + email);
-            System.out.println("JWT ROLE = " + role);
+            System.out.println("JWT: VALID");
+            System.out.println("JWT EMAIL: " + email);
+            System.out.println("JWT ROLE: " + role);
 
-            // Convert role into Spring Security authority
             SimpleGrantedAuthority authority =
                     new SimpleGrantedAuthority("ROLE_" + role);
 
-            // DEBUG
-            System.out.println(
-                    "AUTHORITY = " + authority.getAuthority()
-            );
-
-            // Create authenticated user
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             email,
@@ -70,13 +106,27 @@ public class JwtFilter extends OncePerRequestFilter {
                             Collections.singletonList(authority)
                     );
 
-            // Store authentication in SecurityContext
             SecurityContextHolder
                     .getContext()
                     .setAuthentication(authentication);
+
+            System.out.println(
+                    "AUTHORITY: " + authority.getAuthority()
+            );
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "JWT FILTER ERROR: " + e.getMessage()
+            );
+
+            SecurityContextHolder.clearContext();
         }
 
-        // Continue request
+        // ==========================================
+        // CONTINUE REQUEST
+        // ==========================================
+
         filterChain.doFilter(request, response);
     }
 }
