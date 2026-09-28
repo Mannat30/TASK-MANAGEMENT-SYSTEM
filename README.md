@@ -1,4 +1,4 @@
-# Task Management System
+# TaskFLOW
 
 A full-stack Task Management System built with **Spring Boot, React, MySQL, JWT Authentication, and Docker**.
 
