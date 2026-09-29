@@ -11,7 +11,7 @@ The application is also **Dockerized**, allowing the complete system to run loca
 
 ### 🔐 Login
 
-![Login](login.png)
+![Login](Login.png)
 
 ### 📊 Dashboard
 
