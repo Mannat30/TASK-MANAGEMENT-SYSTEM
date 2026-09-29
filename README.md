@@ -1,108 +1,123 @@
-# TaskFLOW
+# 🚀 TaskFlow — Task Management System
 
-A full-stack Task Management System built with **Spring Boot, React, MySQL, JWT Authentication, and Docker**.
+TaskFlow is a full-stack Task Management System built using **Spring Boot and React**.  
+It provides secure JWT-based authentication, task CRUD operations, searching, filtering, sorting, pagination, dashboard statistics, and role-based admin management.
 
-The application allows users to securely register, log in, create and manage tasks, filter and search tasks, track task progress, and view task statistics.
+The application is also **Dockerized**, allowing the complete system to run locally using Docker Compose.
 
 ---
 
-## 🚀 Features
+## 📸 Screenshots
 
-### Authentication & Authorization
+### 🔐 Login
+
+![Login](login.png)
+
+### 📊 Dashboard
+
+![Dashboard](DashBoard.png)
+
+### ➕ Create New Task
+
+![Create Task](CreateTask.png)
+
+### ✏️ After Task Update
+
+![After Task Update](After%20Task%20update.png)
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Security
 
 - User registration
 - User login
 - JWT-based authentication
-- Password encryption using BCrypt
+- BCrypt password encryption
 - Role-based authorization
 - USER and ADMIN roles
 - Protected API endpoints
+- Stateless authentication
 
-### Task Management
+### 📋 Task Management
 
 - Create tasks
 - View tasks
-- View task by ID
 - Update tasks
 - Delete tasks
-- Assign task status
-- Assign task priority
-- Set task due dates
+- View individual tasks
+- Task status management
+- Task priority management
+- Due dates
+- User-specific tasks
 
-### Task Status
-
-- TODO
-- IN_PROGRESS
-- COMPLETED
-
-### Task Priority
-
-- LOW
-- MEDIUM
-- HIGH
-
-### Search, Filter & Sorting
+### 🔎 Search & Filtering
 
 - Search tasks by title
 - Filter by status
 - Filter by priority
 - Combine search and filters
-- Sort tasks
+
+### 📊 Sorting & Pagination
+
+- Sort tasks by different fields
 - Ascending and descending sorting
-- Pagination
+- Server-side pagination
+- Configurable page size
 
-### Dashboard
+### 📈 Dashboard
 
-- Total task count
-- TODO count
-- In-progress count
-- Completed count
-- My Tasks view
-- Completed Tasks view
+The dashboard provides task statistics including:
 
-### Admin Features
+- Total tasks
+- To Do tasks
+- In Progress tasks
+- Completed tasks
 
-- View all users
+### 👨‍💼 Admin Management
+
+Administrators can:
+
+- View users
 - Delete users
 - Update user roles
-- Protected admin endpoints
 
-### Docker
+### 🐳 Docker
 
-The complete application is containerized using Docker:
+The application is containerized using Docker.
 
-- React + Nginx
-- Spring Boot
-- MySQL
-- Docker Compose
-- Persistent MySQL volume
+Docker Compose runs:
+
+- React frontend
+- Spring Boot backend
+- MySQL database
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-### Backend
+## Backend
 
 - Java 25
-- Spring Boot
-- Spring Web
+- Spring Boot 4.1.1
 - Spring Data JPA
 - Spring Security
 - JWT
 - Hibernate
 - Maven
-- Lombok
 - MySQL
+- Jakarta Validation
 
-### Frontend
+## Frontend
 
 - React
 - Vite
 - JavaScript
-- Tailwind CSS
 - Axios
+- Tailwind CSS
 
-### DevOps / Deployment
+## DevOps / Deployment
 
 - Docker
 - Docker Compose
@@ -110,19 +125,12 @@ The complete application is containerized using Docker:
 
 ---
 
-## 🏗️ Project Architecture
+# 🏗️ Architecture
 
 ```text
                     ┌─────────────────────┐
-                    │      Browser        │
-                    │    React Frontend   │
-                    └──────────┬──────────┘
-                               │
-                               │ HTTP
-                               ▼
-                    ┌─────────────────────┐
-                    │      Nginx          │
-                    │   React Production  │
+                    │      React UI       │
+                    │   Vite + Tailwind   │
                     └──────────┬──────────┘
                                │
                                │ REST API
@@ -130,15 +138,17 @@ The complete application is containerized using Docker:
                     ┌─────────────────────┐
                     │    Spring Boot      │
                     │      Backend        │
-                    │                     │
-                    │ JWT Authentication  │
-                    │ Spring Security     │
-                    │ JPA / Hibernate     │
+                    ├─────────────────────┤
+                    │ Controllers          │
+                    │ Services             │
+                    │ Repositories         │
+                    │ Spring Security      │
+                    │ JWT Authentication   │
                     └──────────┬──────────┘
                                │
-                               │ JDBC
+                               │ JPA / Hibernate
                                ▼
                     ┌─────────────────────┐
                     │       MySQL         │
-                    │     Database        │
+                    │      Database       │
                     └─────────────────────┘
